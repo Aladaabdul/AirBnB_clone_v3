@@ -3,6 +3,7 @@
 
 """
 from os import getenv
+from flask import jsonify
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
@@ -19,6 +20,13 @@ def teardown_engine(exception):
 
     """
     storage.close()
+
+
+@app.errorhandler(404)
+def not_found(error):
+    """ Error Handler """
+    response = {"error": "Not found"}
+    return jsonify(response), 404
 
 
 if __name__ == "__main__":

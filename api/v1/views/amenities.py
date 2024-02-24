@@ -11,18 +11,22 @@ from models.amenity import Amenity
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
 def get_amenities():
     """Retrieves the list of all Amenity objects"""
-    amenities = [amenity.to_dict() for amenity in storage.all("Amenity").values()]
-    return jsonify(amenities)
+    amenities = storage.all(Amenity).values()
+    return jsonify([amenity.to_dict() for amenity in amenities])
 
 
-@app_views.route("/amenities/<amenity_id>", methods=["GET"], strict_slashes=False)
+@app_views.route(
+        "/amenities/<amenity_id>",
+        methods=["GET"],
+        strict_slashes=False
+        )
 def amenities_by_id(amenity_id):
     """Retrieve amenity by id"""
-    amenity = storage.get("Amenity", amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
     if amenity:
         return jsonify(amenity.to_dict())
     else:
-        abort (404)
+        abort(404)
 
 
 @app_views.route(
@@ -32,7 +36,7 @@ def amenities_by_id(amenity_id):
         )
 def delete_amenity(amenity_id):
     """Delete amenity object by id"""
-    amenity = storage.get("Amenity", amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
     if amenity:
         storage.delete(amenity)
         storage.save
@@ -65,7 +69,7 @@ def create_amenity():
         )
 def update_amenity(amenity_id):
     """update amenity object"""
-    amenity = storage.get("Amenity", amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
     if amenity:
         if not request.get_json():
             abort(400, "Not a JSON")

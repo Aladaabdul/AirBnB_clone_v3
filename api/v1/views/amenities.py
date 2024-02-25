@@ -31,8 +31,7 @@ def amenities_by_id(amenity_id):
 
 @app_views.route(
         "/amenities/<amenity_id>",
-        methods=["DELETE"],
-        strict_slashes=False
+        methods=["DELETE"]
         )
 def delete_amenity(amenity_id):
     """Delete amenity object by id"""

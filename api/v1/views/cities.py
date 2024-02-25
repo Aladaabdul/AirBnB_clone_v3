@@ -62,7 +62,7 @@ def create_city(state_id):
         abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
-    data = requeest.get_json()
+    data = request.get_json()
     data["state_id"] = state_id
     city = City(**data)
     city.save()
@@ -88,3 +88,17 @@ def update_city(city_id):
         return jsonify(city.to_dict()), 200
     else:
         abort(404)
+
+
+@app_views.errorhandler(404)
+def not_found(error):
+    """Handles not found error"""
+    response = ({"error": "Not found"})
+    return jsonify(response), 404
+
+
+@app_views.errorhandler(400)
+def bad_request(error):
+    """Bad request error"""
+    response = ({"error": "Bad request"})
+    return jsonify(response), 400

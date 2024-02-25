@@ -63,6 +63,8 @@ def create_city(state_id):
     if not request.get_json():
         abort(400, "Not a JSON")
     data = request.get_json()
+    if "name" not in data:
+        abort(400, "Not a JSON")
     data["state_id"] = state_id
     city = City(**data)
     city.save()
